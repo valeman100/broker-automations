@@ -28,10 +28,12 @@ function SliderInput({
   onChange: (v: number) => void;
   suffix?: string;
 }) {
+  const percent = ((value - min) / (max - min)) * 100;
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <div className="flex justify-between items-center">
-        <label className="text-sm font-medium text-[#64748b]">{label}</label>
+        <label className="text-sm font-medium text-[#94a3b8]">{label}</label>
         <div className="flex items-center gap-1">
           <input
             type="number"
@@ -42,10 +44,10 @@ function SliderInput({
               const v = Math.min(max, Math.max(min, Number(e.target.value)));
               onChange(v);
             }}
-            className="w-16 text-center text-sm font-semibold text-[#1a1a2e] border border-[#e2e8f0] rounded-md py-1 px-2 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent"
+            className="w-16 text-center text-sm font-bold text-[#f59e0b] bg-white/5 border border-white/10 rounded-md py-1.5 px-2 focus:outline-none focus:ring-2 focus:ring-[#f59e0b]/50 focus:border-transparent"
           />
           {suffix && (
-            <span className="text-sm text-[#64748b]">{suffix}</span>
+            <span className="text-sm text-[#94a3b8]">{suffix}</span>
           )}
         </div>
       </div>
@@ -56,10 +58,19 @@ function SliderInput({
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full"
+        style={{
+          background: `linear-gradient(to right, #f59e0b ${percent}%, rgba(255,255,255,0.1) ${percent}%)`,
+        }}
       />
-      <div className="flex justify-between text-xs text-[#94a3b8]">
-        <span>{min}{suffix}</span>
-        <span>{max}{suffix}</span>
+      <div className="flex justify-between text-xs text-[#94a3b8]/60">
+        <span>
+          {min}
+          {suffix}
+        </span>
+        <span>
+          {max}
+          {suffix}
+        </span>
       </div>
     </div>
   );
@@ -73,7 +84,7 @@ function CountUp({ value, className }: { value: number; className?: string }) {
   useEffect(() => {
     const start = prevRef.current;
     const end = value;
-    const duration = 400;
+    const duration = 700;
     const startTime = performance.now();
 
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -81,7 +92,7 @@ function CountUp({ value, className }: { value: number; className?: string }) {
     function step(now: number) {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
+      const eased = 1 - Math.pow(1 - progress, 4);
       setDisplayed(Math.round(start + (end - start) * eased));
       if (progress < 1) {
         rafRef.current = requestAnimationFrame(step);
@@ -99,6 +110,14 @@ function CountUp({ value, className }: { value: number; className?: string }) {
   return <span className={className}>{formatEuro(displayed)}</span>;
 }
 
+const floatingEuros = [
+  { size: "text-7xl", left: "5%", duration: "18s", delay: "0s" },
+  { size: "text-5xl", left: "20%", duration: "22s", delay: "4s" },
+  { size: "text-8xl", left: "75%", duration: "20s", delay: "2s" },
+  { size: "text-6xl", left: "90%", duration: "16s", delay: "6s" },
+  { size: "text-9xl", left: "50%", duration: "24s", delay: "8s" },
+];
+
 export default function RoiCalculator() {
   const [hours, setHours] = useState(10);
   const [people, setPeople] = useState(2);
@@ -107,32 +126,57 @@ export default function RoiCalculator() {
 
   const annualCost = hours * people * cost * 48;
   const annualSaving = Math.round(annualCost * 0.75);
+  const savingsPercent = 75;
 
   return (
-    <section id="calcolatore" className="bg-[#f8f9fa] py-20 px-4">
+    <section
+      id="calcolatore"
+      className="bg-[#0f172a] bg-grid-pattern py-24 md:py-32 px-4 relative overflow-hidden"
+    >
+      {/* Floating euro decorations */}
+      {floatingEuros.map((euro, i) => (
+        <span
+          key={i}
+          className={`absolute ${euro.size} text-white pointer-events-none select-none`}
+          style={{
+            left: euro.left,
+            bottom: "-10%",
+            opacity: 0,
+            animation: `floatUp ${euro.duration} linear ${euro.delay} infinite`,
+          }}
+        >
+          &euro;
+        </span>
+      ))}
+
       <div
         ref={ref}
-        className={`max-w-[1000px] mx-auto transition-all duration-700 ${
+        className={`max-w-[1100px] mx-auto relative z-10 transition-all duration-700 ${
           inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <div className="text-center mb-12">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#2563eb] block mb-3">
-            Calcolatore
+        {/* Header */}
+        <div className="text-center mb-14">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#f59e0b] block mb-3">
+            Calcolatore ROI
           </span>
-          <h2 className="text-2xl md:text-3xl font-semibold text-[#1a1a2e] mb-3">
-            Quanto ti costa il lavoro manuale ogni anno?
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-[#faf8f5] mb-4">
+            Quanto ti costa il lavoro manuale?
           </h2>
-          <p className="text-[#64748b]">
+          <p className="text-[#94a3b8] max-w-[500px] mx-auto">
             Inserisci i dati della tua agenzia e scopri il margine di risparmio.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          {/* Inputs */}
-          <div className="bg-white border border-[#e2e8f0] rounded-xl p-8 flex flex-col gap-8">
+        {/* Calculator panels */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Left — Inputs */}
+          <div className="glass-dark-solid rounded-2xl p-8 md:p-10 flex flex-col gap-8">
+            <h3 className="text-sm font-semibold text-[#e2e0dc] uppercase tracking-wider">
+              I tuoi dati
+            </h3>
             <SliderInput
-              label="Ore/settimana per attività ripetitive"
+              label="Ore/settimana per attivit&agrave; ripetitive"
               value={hours}
               min={1}
               max={40}
@@ -140,7 +184,7 @@ export default function RoiCalculator() {
               suffix="h"
             />
             <SliderInput
-              label="Persone che svolgono queste attività"
+              label="Persone che svolgono queste attivit&agrave;"
               value={people}
               min={1}
               max={10}
@@ -153,54 +197,88 @@ export default function RoiCalculator() {
               min={15}
               max={50}
               onChange={setCost}
-              suffix="€"
+              suffix="&euro;"
             />
           </div>
 
-          {/* Output */}
-          <div className="bg-white rounded-2xl p-10 shadow-[0_4px_24px_rgba(0,0,0,0.08)] flex flex-col gap-6">
+          {/* Right — Results Dashboard */}
+          <div className="glass-dark-solid rounded-2xl p-8 md:p-10 flex flex-col gap-6 border border-[#f59e0b]/10">
+            {/* Annual cost */}
             <div className="text-center">
-              <p className="text-sm font-medium text-[#64748b] mb-2 uppercase tracking-wide">
+              <p className="text-sm font-medium text-[#94a3b8] mb-2 uppercase tracking-wide">
                 Costo annuale del lavoro manuale
               </p>
               <CountUp
                 value={annualCost}
-                className="text-5xl font-bold text-[#dc2626] tabular-nums"
+                className="text-5xl md:text-6xl font-bold text-[#ef4444] tabular-nums animate-pulse-red"
               />
-              <p className="text-sm text-[#94a3b8] mt-1">all&apos;anno</p>
+              <p className="text-xs text-[#94a3b8]/60 mt-2">all&apos;anno</p>
             </div>
 
-            <div className="border-t border-[#f1f5f9] pt-6 text-center">
-              <p className="text-sm font-medium text-[#64748b] mb-2 uppercase tracking-wide">
+            {/* Divider */}
+            <div className="border-t border-white/5" />
+
+            {/* Savings */}
+            <div className="text-center">
+              <p className="text-sm font-medium text-[#94a3b8] mb-2 uppercase tracking-wide">
                 Risparmio stimato con automazione
               </p>
               <CountUp
                 value={annualSaving}
-                className="text-4xl font-bold text-[#059669] tabular-nums"
+                className="text-4xl md:text-5xl font-bold text-[#10b981] tabular-nums"
               />
-              <p className="text-sm text-[#94a3b8] mt-1">all&apos;anno (75% del costo)</p>
-            </div>
-
-            <div className="bg-[#eff6ff] rounded-xl px-5 py-4 text-center">
-              <p className="text-sm font-semibold text-[#2563eb]">
-                ROI dell&apos;investimento in meno di 6 mesi
+              <p className="text-xs text-[#94a3b8]/60 mt-2">
+                all&apos;anno
               </p>
             </div>
 
+            {/* Savings bar */}
+            <div>
+              <div className="flex justify-between text-xs text-[#94a3b8] mb-2">
+                <span>Costo recuperabile</span>
+                <span className="text-[#10b981] font-semibold">{savingsPercent}%</span>
+              </div>
+              <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-[#10b981] to-[#34d399] rounded-full transition-all duration-700"
+                  style={{ width: `${savingsPercent}%` }}
+                />
+              </div>
+            </div>
+
+            {/* ROI Timeline */}
+            <div className="flex items-center justify-between px-2 py-3">
+              {[
+                { label: "Setup", month: "Mese 1" },
+                { label: "Operativo", month: "Mese 3" },
+                { label: "ROI completo", month: "Mese 6" },
+              ].map((step, i) => (
+                <div key={i} className="flex flex-col items-center text-center relative">
+                  <div className="w-3 h-3 rounded-full bg-[#f59e0b] mb-2 relative z-10" />
+                  {i < 2 && (
+                    <div className="absolute top-1.5 left-[calc(50%+6px)] w-[calc(100%+2rem)] h-[1px] bg-[#f59e0b]/30 hidden sm:block" />
+                  )}
+                  <p className="text-xs font-semibold text-[#e2e0dc]">{step.month}</p>
+                  <p className="text-[10px] text-[#94a3b8]">{step.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA */}
             <a
               href={CALENDAR_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="block text-center bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 shadow-sm"
+              className="block text-center bg-[#f59e0b] hover:bg-[#d97706] text-[#0f172a] font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl animate-glow-amber"
             >
               Vediamo insieme dove risparmiare
             </a>
           </div>
         </div>
 
-        <p className="text-center text-xs text-[#94a3b8] mt-6 max-w-[600px] mx-auto leading-relaxed">
+        <p className="text-center text-xs text-[#94a3b8]/60 mt-8 max-w-[600px] mx-auto leading-relaxed">
           Stime basate sulla nostra esperienza con broker assicurativi italiani.
-          Il risparmio effettivo dipende dalla complessità dei processi
+          Il risparmio effettivo dipende dalla complessit&agrave; dei processi
           specifici.
         </p>
       </div>

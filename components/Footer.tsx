@@ -1,24 +1,23 @@
 export default function Footer() {
   return (
-    <footer className="bg-[#1a1a2e] py-10 px-4">
+    <footer className="bg-[#080d19] border-t border-white/5 py-10 px-4">
       <div className="max-w-[800px] mx-auto text-center flex flex-col items-center gap-4">
-        <p className="text-white font-semibold text-base">Valerio Mannucci</p>
+        <p className="text-[#e2e0dc] font-semibold text-base">Valerio Mannucci</p>
 
         <div className="flex items-center gap-6 flex-wrap justify-center">
           <a
             href="mailto:valerio@valeriomannucci.com"
-            className="text-[#94a3b8] hover:text-white text-sm transition-colors"
+            className="text-[#94a3b8] hover:text-[#f59e0b] text-sm transition-colors"
           >
             valerio@valeriomannucci.com
           </a>
 
-          {/* LinkedIn */}
           <a
-            href="https://www.linkedin.com/in/valeriomannucci/"
+            href="https://www.linkedin.com/in/valerio-mannucci/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="text-[#94a3b8] hover:text-white transition-colors"
+            className="text-[#94a3b8] hover:text-[#f59e0b] transition-colors"
           >
             <svg
               width="18"
@@ -31,8 +30,8 @@ export default function Footer() {
           </a>
         </div>
 
-        <p className="text-[#64748b] text-xs">
-          © {new Date().getFullYear()} Valerio Mannucci — Tutti i diritti
+        <p className="text-white/30 text-xs">
+          &copy; {new Date().getFullYear()} Valerio Mannucci &mdash; Tutti i diritti
           riservati
         </p>
       </div>

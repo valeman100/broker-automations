@@ -49,28 +49,31 @@ export default function ProblemSection() {
   const { ref, inView } = useInView({ threshold: 0.1 });
 
   return (
-    <section id="problema" className="bg-[#f8f9fa] py-20 px-4">
+    <section id="problema" className="bg-[#faf8f5] py-20 px-4">
       <div
         ref={ref}
         className={`max-w-[680px] mx-auto transition-all duration-700 ${
           inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <span className="text-xs font-semibold uppercase tracking-widest text-[#2563eb] block mb-3">
+        <span className="text-xs font-semibold uppercase tracking-widest text-[#f59e0b] block mb-3">
           Il Problema
         </span>
-        <h2 className="text-2xl md:text-3xl font-semibold text-[#1a1a2e] mb-10">
+        <h2 className="font-display text-2xl md:text-3xl text-[#1a1a2e] mb-4">
           Conosci questa situazione?
         </h2>
+        <p className="text-[#94a3b8] mb-10 text-sm">
+          Hai appena visto quanto ti costa. Ecco da dove vengono quei numeri.
+        </p>
 
         <div className="space-y-6">
           {problems.map((item, i) => (
             <div
               key={i}
-              className={`flex items-start gap-4 transition-all duration-500`}
+              className="flex items-start gap-4 transition-all duration-500"
               style={{ transitionDelay: `${i * 100}ms` }}
             >
-              <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-white border border-[#e2e8f0] flex items-center justify-center text-[#64748b]">
+              <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-white border-l-2 border-[#f59e0b] flex items-center justify-center text-[#94a3b8]">
                 {item.icon}
               </div>
               <p className="text-base md:text-lg text-[#1a1a2e] leading-relaxed pt-1">
