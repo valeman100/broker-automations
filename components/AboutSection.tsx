@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
 
 const credentials = [
@@ -34,10 +35,14 @@ export default function AboutSection() {
 
         <div className="flex flex-col md:flex-row gap-10 items-start">
           <div className="flex-shrink-0 hidden md:block">
-            <div className="w-[120px] h-[120px] rounded-full bg-[#e8e4df] ring-2 ring-[#f59e0b]/30 ring-offset-2 ring-offset-[#f5f0eb] flex items-center justify-center text-[#94a3b8]">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
+            <div className="w-[120px] h-[120px] rounded-full overflow-hidden ring-2 ring-[#f59e0b]/30 ring-offset-2 ring-offset-[#f5f0eb]">
+              <Image
+                src="/valerio.png"
+                alt="Valerio Mannucci"
+                width={120}
+                height={120}
+                className="object-cover w-full h-full"
+              />
             </div>
           </div>
 

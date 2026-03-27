@@ -8,13 +8,15 @@ function formatEuro(value: number): string {
   return new Intl.NumberFormat("it-IT", {
     style: "currency",
     currency: "EUR",
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(value);
 }
 
 function MoneyCounter() {
   const ANNUAL_COST = 24000; // 10h * 2 people * 25EUR * 48 weeks
   const PER_SECOND = ANNUAL_COST / (365 * 24 * 3600);
+  const VISUAL_SPEED = 10; // multiplier only for animation tick, not for initial value
 
   const [amount, setAmount] = useState(0);
   const rafRef = useRef<number | null>(null);
@@ -27,11 +29,11 @@ function MoneyCounter() {
     const initialAmount = elapsedSeconds * PER_SECOND;
 
     baseRef.current = { time: performance.now(), amount: initialAmount };
-    setAmount(Math.round(initialAmount));
+    setAmount(initialAmount);
 
     function tick() {
       const dt = (performance.now() - baseRef.current.time) / 1000;
-      setAmount(Math.round(baseRef.current.amount + dt * PER_SECOND));
+      setAmount(baseRef.current.amount + dt * PER_SECOND * VISUAL_SPEED);
       rafRef.current = requestAnimationFrame(tick);
     }
 
@@ -44,13 +46,15 @@ function MoneyCounter() {
   return (
     <div className="glass-dark-solid rounded-2xl p-8 md:p-10 text-center">
       <p className="text-sm font-medium text-[#94a3b8] uppercase tracking-widest mb-4">
-        Euro persi quest&apos;anno in lavoro manuale
+        Costo del lavoro manuale nel tuo studio dal 1 Gennaio a ora
       </p>
       <p className="text-5xl md:text-6xl font-bold text-[#ef4444] tabular-nums animate-pulse-red mb-3">
         {formatEuro(amount)}
       </p>
-      <p className="text-xs text-[#94a3b8] mb-6">
-        basato su una media di 10h/settimana di attivit&agrave; ripetitive
+      <p className="text-xs text-[#94a3b8] mb-1">
+        Ogni ora che una persona del tuo team passa su <br/>
+        scadenze, rinnovi o data entry
+        non generare valore reale.
       </p>
       <button
         onClick={() =>
@@ -58,7 +62,7 @@ function MoneyCounter() {
         }
         className="text-[#f59e0b] hover:text-[#d97706] text-sm font-medium transition-colors cursor-pointer bg-transparent border-none"
       >
-        Scopri il tuo numero reale &darr;
+        Calcola il tuo numero reale &darr;
       </button>
     </div>
   );
@@ -98,7 +102,7 @@ export default function HeroSection() {
             >
               Calcola quanto stai perdendo
             </a>
-            <div className="flex flex-col items-start gap-1">
+            <div className="flex flex-col items-center gap-1">
               <a
                 href={CALENDAR_LINK}
                 target="_blank"
@@ -107,7 +111,7 @@ export default function HeroSection() {
               >
                 Prenota una chiamata
               </a>
-              <p className="text-sm text-[#94a3b8]/60 pl-1">
+              <p className="text-sm text-[#94a3b8]/60">
                 20 minuti, nessun impegno
               </p>
             </div>

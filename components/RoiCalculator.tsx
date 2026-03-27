@@ -125,8 +125,8 @@ export default function RoiCalculator() {
   const { ref, inView } = useInView({ threshold: 0.1 });
 
   const annualCost = hours * people * cost * 48;
-  const annualSaving = Math.round(annualCost * 0.75);
-  const savingsPercent = 75;
+  const annualSaving = Math.round(annualCost * 0.95);
+  const savingsPercent = 95;
 
   return (
     <section
@@ -247,17 +247,15 @@ export default function RoiCalculator() {
             </div>
 
             {/* ROI Timeline */}
-            <div className="flex items-center justify-between px-2 py-3">
+            <div className="relative grid grid-cols-3 px-2 py-3">
+              <div className="absolute top-[1.125rem] left-[16.67%] right-[16.67%] h-[1px] bg-[#f59e0b]/30" />
               {[
                 { label: "Setup", month: "Mese 1" },
-                { label: "Operativo", month: "Mese 3" },
+                { label: "Operativo", month: "Mese 2" },
                 { label: "ROI completo", month: "Mese 6" },
               ].map((step, i) => (
-                <div key={i} className="flex flex-col items-center text-center relative">
+                <div key={i} className="flex flex-col items-center text-center">
                   <div className="w-3 h-3 rounded-full bg-[#f59e0b] mb-2 relative z-10" />
-                  {i < 2 && (
-                    <div className="absolute top-1.5 left-[calc(50%+6px)] w-[calc(100%+2rem)] h-[1px] bg-[#f59e0b]/30 hidden sm:block" />
-                  )}
                   <p className="text-xs font-semibold text-[#e2e0dc]">{step.month}</p>
                   <p className="text-[10px] text-[#94a3b8]">{step.label}</p>
                 </div>
