@@ -40,8 +40,7 @@ export default function Footer() {
         </div>
 
         <p className="text-white/30 text-xs">
-          &copy; {new Date().getFullYear()} Valerio Mannucci &mdash; Tutti i diritti
-          riservati
+          {`© ${new Date().getFullYear()} Valerio Mannucci — Tutti i diritti riservati`}
         </p>
       </div>
     </footer>

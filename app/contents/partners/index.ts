@@ -9,6 +9,14 @@ export interface Partner {
 
 export const PARTNERS: Partner[] = [
     {
+        slug: 'emaillabeler',
+        name: 'Email Labeler',
+        description: 'AI email management — describe your labels, the AI sorts the inbox for you',
+        logo: '/partner-logos/email-labeler-logo.png',
+        url: 'https://www.email-labeler.com/',
+        mdFile: 'emaillabeler.md',
+    },
+    {
         slug: 'behindeverystock',
         name: 'BehindEveryStock',
         description: 'Stock analysis and market insights platform',

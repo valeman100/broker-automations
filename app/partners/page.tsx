@@ -1,7 +1,15 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { PARTNERS } from "@/app/contents/partners";
+
+// Logos are optional: a partner without a file in public/partner-logos just
+// renders without one.
+const hasLogo = (logo: string) =>
+  existsSync(path.join(process.cwd(), "public", logo));
 
 export const metadata: Metadata = {
   title: "Partner | Broker Automazioni — Valerio Mannucci",
@@ -35,17 +43,29 @@ export default function PartnersPage() {
               <li key={partner.slug}>
                 <Link
                   href={`/partners/${partner.slug}`}
-                  className="glass-dark block rounded-xl p-6 hover:border-[#f59e0b]/40 transition-colors group"
+                  className="glass-dark flex items-start gap-5 rounded-xl p-6 hover:border-[#f59e0b]/40 transition-colors group"
                 >
-                  <h2 className="font-display text-xl text-[#faf8f5] group-hover:text-[#f59e0b] transition-colors">
-                    {partner.name}
-                  </h2>
-                  <p className="text-[#94a3b8] text-sm mt-2">
-                    {partner.description}
-                  </p>
-                  <span className="inline-block text-[#f59e0b] text-sm font-semibold mt-4">
-                    Leggi l&apos;articolo &rarr;
-                  </span>
+                  {hasLogo(partner.logo) && (
+                    <Image
+                      src={partner.logo}
+                      alt={`Logo ${partner.name}`}
+                      width={56}
+                      height={56}
+                      className="rounded-lg bg-white/5 p-1.5 flex-shrink-0"
+                    />
+                  )}
+
+                  <div>
+                    <h2 className="font-display text-xl text-[#faf8f5] group-hover:text-[#f59e0b] transition-colors">
+                      {partner.name}
+                    </h2>
+                    <p className="text-[#94a3b8] text-sm mt-2">
+                      {partner.description}
+                    </p>
+                    <span className="inline-block text-[#f59e0b] text-sm font-semibold mt-4">
+                      Leggi l&apos;articolo &rarr;
+                    </span>
+                  </div>
                 </Link>
               </li>
             ))}

@@ -80,7 +80,7 @@ export default async function PartnerArticlePage({
             rel="noopener noreferrer"
             className="inline-block text-[#f59e0b] hover:underline text-sm font-semibold mt-3"
           >
-            {partner.name} &nearr;
+            {partner.name} ↗
           </a>
 
           <div
