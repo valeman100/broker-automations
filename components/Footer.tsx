@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="bg-[#080d19] border-t border-white/5 py-10 px-4">
@@ -5,6 +7,13 @@ export default function Footer() {
         <p className="text-[#e2e0dc] font-semibold text-base">Valerio Mannucci</p>
 
         <div className="flex items-center gap-6 flex-wrap justify-center">
+          <Link
+            href="/partners"
+            className="text-[#94a3b8] hover:text-[#f59e0b] text-sm transition-colors"
+          >
+            Partner
+          </Link>
+
           <a
             href="mailto:valerio@valeriomannucci.com"
             className="text-[#94a3b8] hover:text-[#f59e0b] text-sm transition-colors"
