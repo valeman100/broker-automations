@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { DM_Serif_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -131,7 +132,16 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Umami analytics (self-hosted on the Oracle VM); data-domains is an exact match. */}
+        <Script
+          src="https://pulse.valeriomannucci.com/p.js"
+          data-website-id="711e4c31-b8ad-4ef4-9803-3de20d04fcac"
+          data-domains="broker-automations.valeriomannucci.com"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }
