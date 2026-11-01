@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt =
   "Automazione Processi per Broker Assicurativi — Valerio Mannucci";
 export const size = { width: 1200, height: 630 };
